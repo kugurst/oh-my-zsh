@@ -36,7 +36,7 @@ CURRENT_BG='NONE'
   local LC_ALL="" LC_CTYPE="en_US.UTF-8"
   # NOTE: This segment separator character is correct.  In 2012, Powerline changed
   # the code points they use for their special characters. This is the new code point.
-  # If this is not working for you, you probably have an old version of the 
+  # If this is not working for you, you probably have an old version of the
   # Powerline-patched fonts installed. Download and install the new version.
   # Do not submit PRs to change this unless you have reviewed the Powerline code point
   # history and have new information.
@@ -163,7 +163,7 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment blue black '%~'
+  prompt_segment cyan black '%~'
 }
 
 # Virtualenv: current working virtualenv
@@ -181,11 +181,15 @@ prompt_virtualenv() {
 prompt_status() {
   local symbols
   symbols=()
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
+  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}$RETVAL"
   [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
 
   [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
+}
+
+prompt_time() {
+    prompt_segment white black "%w - %T"
 }
 
 ## Main prompt
@@ -195,6 +199,7 @@ build_prompt() {
   prompt_virtualenv
   prompt_context
   prompt_dir
+  prompt_time
   prompt_git
   prompt_hg
   prompt_end
